@@ -1,0 +1,6 @@
+<launch>
+  <arg name="map_file" default="$(find xbot_robot_slam)/../xbot_data/maps/loading-hallway.yaml"/>
+  <!-- Run the map server -->
+  <node name="map_server_post_process" pkg="map_server" type="map_server" args="$(arg map_file)" />
+  <node pkg="xbot_post_process_map" name="post_process_map_obstacle_expand" type="ObstacleExpand.py" output="screen"/>
+</launch>

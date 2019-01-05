@@ -1,0 +1,7 @@
+<launch>
+    <include file="$(find xbot_robot_comms)/launch/robot_comms.launch"/>
+    <node pkg="xbot_setup_tf" type="tf_broadcaster" name="tf_broadcaster"/>
+    <include file="$(find xbot_lidar)/launch/lidar.launch"/>
+    <include file="$(find xbot_odo)/launch/odo.launch"/>
+    <node pkg="rosbag" type="record" args="-o /data/bag_ /scan_raw /rawsensor/wheel_odom /navx/imu /tf_static /tf" name="record"/>
+</launch>

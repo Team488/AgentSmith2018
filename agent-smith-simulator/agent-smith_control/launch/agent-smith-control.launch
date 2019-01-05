@@ -1,0 +1,32 @@
+<launch>
+
+  <group ns="/sim">
+    <param name="tf_prefix" value="sim" />
+    <!-- Load the control configuration and spawn the controllers -->
+    <rosparam command="load" file="$(find agent-smith_control)/config/control.yaml" />
+    <node name="controller_spawner"
+          pkg="controller_manager"
+          type="spawner" 
+          respawn="false"
+          output="screen"
+          ns="/sim"
+          args="joint_state_controller
+                front_left_velocity_controller
+                front_right_velocity_controller
+                mid_left_velocity_controller
+                mid_right_velocity_controller
+                back_left_velocity_controller
+                back_right_velocity_controller" />
+
+    <!-- Convert joint states to TF transforms for rviz, etc -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">
+      <!-- <remap from="/joint_states" to="/sim/joint_states" /> -->
+    </node>
+
+    <!-- Automatically control the lidar joint -->
+    <!-- To re-enable this, also add "main_lidar_velocity_controller" to the list above -->
+    <!--node name="lidar_control" pkg="rostopic" type="rostopic" args="pub -1 /sim/main_lidar_velocity_controller/command std_msgs/Float64 'data: 62.8318530718'" /-->
+
+  </group>
+
+</launch>

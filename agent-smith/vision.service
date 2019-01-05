@@ -1,0 +1,13 @@
+[Unit]
+Description=Xbot Vision Service
+# After=basic.target # basic is included by default
+
+[Service]
+User=root
+Restart=always
+Type=simple
+ExecStart=/home/nvidia/catkin_ws/src/robot-odom/startup.sh
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

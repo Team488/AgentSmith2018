@@ -1,0 +1,252 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <model name="frc2018_field">
+    <static>true</static>
+    <link name="field">
+
+      <!-- Visual of the field -->
+      <visual name="field_visual">
+        <geometry>
+          <mesh>
+            <uri>model://Gazebo2018/frc2018_field/meshes/field.obj</uri>
+          </mesh>
+        </geometry>
+      </visual>
+
+      <!-- Collision geometries -->
+      <collision name="floor_collision">
+        <geometry>
+          <plane>
+            <normal>0 0 1</normal>
+            <size>100 100</size>
+          </plane>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>100</mu>
+              <mu2>50</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <collision name='blue_wall_collision'>
+        <pose>0 -8.245 1 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>6.75 0.05 2</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name='red_wall_collision'>
+        <pose>0 8.245 1 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>6.75 0.05 2</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name='side1_wall_collision'>
+        <pose>-4.13911 0 0.25 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.05 14.7 0.5</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name='side2_wall_collision'>
+        <pose>4.13911 0 0.25 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.05 14.7 0.5</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name='blue_corner1_collision'>
+        <pose>-3.76153 -7.78821 1 0 0 0.6719518</pose>
+        <geometry>
+          <box>
+            <size>0.05 1.1 2</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name='blue_corner2_collision'>
+        <pose>3.76153 -7.78821 1 0 0 -0.6719518</pose>
+        <geometry>
+          <box>
+            <size>0.05 1.1 2</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name='red_corner1_collision'>
+        <pose>-3.76153 7.78821 1 0 0 -0.6719518</pose>
+        <geometry>
+          <box>
+            <size>0.05 1.1 2</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name='red_corner2_collision'>
+        <pose>3.76153 7.78821 1 0 0 0.6719518</pose>
+        <geometry>
+          <box>
+            <size>0.05 1.1 2</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name='blue_smallstep_left_collision'>
+        <pose>-0.346418 -8.13736 -0.016684 -0.287855408 0.2458331158 -0.0650609876</pose>
+        <geometry>
+          <box>
+            <size>0.2 0.2 0.025</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name='blue_smallstep_center_collision'>
+        <pose>-0.746 -8.12854 0.006782 -0.270805287 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.61 0.2 0.025</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name='blue_smallstep_right_collision'>
+        <pose>-1.14558 -8.13736 -0.016684  -0.287855408 -0.2458331158 0.0650609876</pose>
+        <geometry>
+          <box>
+            <size>0.2 0.2 0.025</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name='red_smallstep_left_collision'>
+        <pose>0.346418 8.13736 -0.016684 -0.287855408 0.2458331158 3.07653166599</pose>
+        <geometry>
+          <box>
+            <size>0.2 0.2 0.025</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name='red_smallstep_center_collision'>
+        <pose>0.746 8.12854 0.006782 -0.270805287 0 3.14159265359</pose>
+        <geometry>
+          <box>
+            <size>0.61 0.2 0.025</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name='red_smallstep_right_collision'>
+        <pose>1.14558 8.13736 -0.016684  -0.287855408 -0.2458331158 3.20665364119</pose>
+        <geometry>
+          <box>
+            <size>0.2 0.2 0.025</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name='blue_switchwall_near_collision'>
+        <pose>0 -4.65 0.223 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>3.9 0.05 0.5</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name='blue_switchwall_far_collision'>
+        <pose>0 -3.27 0.223 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>3.9 0.05 0.5</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name='blue_switchwall_side1_collision'>
+        <pose>-1.925 -3.96 0.223 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.05 1.33 0.5</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name='blue_switchwall_side2_collision'>
+        <pose>1.925 -3.96 0.223 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.05 1.33 0.5</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name='red_switchwall_near_collision'>
+        <pose>0 4.65 0.223 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>3.9 0.05 0.5</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name='red_switchwall_far_collision'>
+        <pose>0 3.27 0.223 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>3.9 0.05 0.5</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name='red_switchwall_side1_collision'>
+        <pose>-1.925 3.96 0.223 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.05 1.33 0.5</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name='red_switchwall_side2_collision'>
+        <pose>1.925 3.96 0.223 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.05 1.33 0.5</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name='tower_side1_collision'>
+        <pose>-0.237202 0 -0.071719 0 -0.698131701 0</pose>
+        <geometry>
+          <box>
+            <size>2 0.44 2</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name='tower_side2_collision'>
+        <pose>0.237202 0 -0.071719 0 0.698131701 0</pose>
+        <geometry>
+          <box>
+            <size>2 0.44 2</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name='tower_bluecenter_collision'>
+        <pose>0 -0.25 1.07 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.43 0.05 2.14</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name='tower_redcenter_collision'>
+        <pose>0 0.25 1.07 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.43 0.05 2.14</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name='tower_step_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://Gazebo2018/frc2018_field/meshes/field_centerstep_collision.obj</uri>
+          </mesh>
+        </geometry>
+      </collision>
+
+    </link>
+  </model>
+</sdf>

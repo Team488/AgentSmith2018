@@ -1,0 +1,2 @@
+float32 heading_deflection_radians
+float32 distance_meters

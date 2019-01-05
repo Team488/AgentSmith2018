@@ -1,0 +1,6 @@
+<launch>
+    <node name="behavior_agent_node2" pkg="xbot_behavior_agent" type="xbot_behavior_agent_node.py" output="screen"/>
+    <!-- <include file="$(find xbot_vision)/launch/vision.launch"/> -->
+    <!--include file="$(find xbot_robot_comms)/launch/robot_comms.launch"/-->
+    <!-- <include file="$(find xbot_odo)/launch/odo.launch"/> -->
+</launch>

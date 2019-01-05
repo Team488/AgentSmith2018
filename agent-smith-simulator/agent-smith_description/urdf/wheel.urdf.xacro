@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<robot name="wheel" xmlns:xacro="http://ros.org/wiki/xacro">
+
+	<xacro:macro name="wheel" params="wheel_prefix max_speed_rad_per_sec mu2 *joint_pose">
+		<link name="${wheel_prefix}_wheel_link">
+			<inertial>
+				<mass value="0.283" />
+				<origin xyz="0 0 0" />
+				<inertia  ixx="0.00020635" ixy="0" ixz="0" iyy="0.00036516" iyz="0" izz="0.00020635" />
+			</inertial>
+			<collision>
+				<origin xyz="0 0 0" rpy="${M_PI/2} 0 0" />
+				<geometry>
+					<cylinder length="0.03175" radius="0.0508" />
+				</geometry>
+			</collision>
+		</link>
+
+		<joint name="${wheel_prefix}_wheel" type="continuous">
+			<parent link="base_link" />
+			<child link="${wheel_prefix}_wheel_link" />
+			<xacro:insert_block name="joint_pose" />
+			<axis xyz="0 1 0" rpy="0 0 0" />
+			<limit effort="100" velocity="${max_speed_rad_per_sec}" />
+		</joint>
+
+		<gazebo reference="${wheel_prefix}_wheel_link">
+			<mu1 value="1000000.0" />
+			<mu2 value="${mu2}" />
+			<kp value="10000000.0" />
+			<kd value="1.0" />
+			<fdir1 value="1 0 0" />
+			<dampingFactor>0.1</dampingFactor>
+		</gazebo>
+
+		<transmission name="${wheel_prefix}_wheel_trans" type="SimpleTransmission">
+			<type>transmission_interface/SimpleTransmission</type>
+			<actuator name="${wheel_prefix}_wheel_motor">
+				<mechanicalReduction>1</mechanicalReduction>
+				<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+			</actuator>
+			<joint name="${wheel_prefix}_wheel">
+				<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+			</joint>
+		</transmission>
+
+	</xacro:macro>
+</robot>

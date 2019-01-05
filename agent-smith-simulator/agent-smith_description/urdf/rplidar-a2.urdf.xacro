@@ -1,0 +1,133 @@
+<?xml version="1.0"?>
+<robot name="rplidar-a2" xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <xacro:property name="M_PI" value="3.14159" />
+	<xacro:property name="MASS" value="0.19" />
+	<xacro:property name="HEIGHT" value="0.041" />
+	<xacro:property name="RADIUS" value="0.038" />
+
+	<!-- Calculate inertia for one segment of the lidar (half height, half mass) -->
+	<xacro:property name="IXX" value="${(3 * RADIUS * RADIUS + HEIGHT * HEIGHT / 4) * MASS / 2 / 12}" />
+	<xacro:property name="IZZ" value="${RADIUS * RADIUS * MASS / 2 / 2}" />
+
+	<xacro:macro name="rplidar-a2" params="lidar_prefix *joint_pose">
+		<link name="${lidar_prefix}_lidar_base_link">
+			<inertial>
+				<mass value="${0.5 * MASS}" />
+				<origin xyz="0 0 0" />
+				<inertia  ixx="${IXX}" ixy="0" ixz="0" iyy="${IXX}" iyz="0" izz="${IZZ}" />
+			</inertial>
+			<collision>
+				<origin xyz="0 0 ${-0.5 * HEIGHT}" rpy="0 0 0" />
+				<geometry>
+					<cylinder length="${0.5 * HEIGHT}" radius="${RADIUS}" />
+				</geometry>
+			</collision>
+			<visual>
+				<origin xyz="0 0 ${-0.5 * HEIGHT}" rpy="0 0 0" />
+				<geometry>
+					<cylinder length="${0.5 * HEIGHT}" radius="${RADIUS}" />
+				</geometry>
+			</visual>
+		</link>
+
+		<link name="${lidar_prefix}_lidar_top_link">
+			<inertial>
+				<mass value="${0.5 * MASS}" />
+				<origin xyz="0 0 0" />
+				<inertia  ixx="${IXX}" ixy="0" ixz="0" iyy="${IXX}" iyz="0" izz="${IZZ}" />
+			</inertial>
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0" />
+				<geometry>
+					<cylinder length="${0.5 * HEIGHT}" radius="${RADIUS}" />
+				</geometry>
+			</collision>
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0" />
+				<geometry>
+					<cylinder length="${0.5 * HEIGHT}" radius="${RADIUS}" />
+				</geometry>
+			</visual>
+		</link>
+
+		<joint name="${lidar_prefix}_lidar_base" type="fixed">
+			<parent link="base_link" />
+			<child link="${lidar_prefix}_lidar_base_link" />
+			<xacro:insert_block name="joint_pose" />
+		</joint>
+
+		<!--joint name="${lidar_prefix}_lidar" type="continuous">
+			<parent link="${lidar_prefix}_lidar_base_link" />
+			<child link="${lidar_prefix}_lidar_top_link" />
+    		<origin xyz="0 0 0" rpy="0 0 0" />
+			<axis xyz="0 0 -1" rpy="0 0 0" />
+			<limit effort="100" velocity="62.8318530718" />
+		</joint-->
+
+		<joint name="${lidar_prefix}_lidar" type="fixed">
+			<parent link="${lidar_prefix}_lidar_base_link" />
+			<child link="${lidar_prefix}_lidar_top_link" />
+			<origin xyz="0 0 0" rpy="0 0 0" />
+		</joint>
+
+        <gazebo reference="${lidar_prefix}_lidar_top_link">
+            <sensor type="ray" name="${lidar_prefix}_lidar">
+                <pose>0 0 0 0 0 0</pose>
+
+                <!-- Enable visualization to see the rays in Gazebo -->
+                <visualize>true</visualize>
+
+                <!-- Set the update rate of the sensor -->
+                <update_rate>10</update_rate>
+				<always_on>true</always_on>
+
+				<ray>
+					<!-- The scan element can contain horizontal and vertical beams. -->
+					<scan>
+						<horizontal>
+							<samples>360</samples>
+
+							<!-- Resolution is multiplied by samples to determine number of
+								simulated beams vs interpolated beams. See:
+								http://sdformat.org/spec?ver=1.6&elem=sensor#horizontal_resolution
+								-->
+							<resolution>1</resolution>
+
+							<min_angle>0</min_angle>
+							<max_angle>${2 * M_PI}</max_angle>
+						</horizontal>
+					</scan>
+
+					<!-- Range defines characteristics of an individual beam -->
+					<range>
+						<min>0.15</min>
+						<max>18</max>
+						<resolution>0.0005</resolution>
+					</range>
+				</ray>
+
+                <plugin name="${lidar_prefix}_lidar_controller" filename="libgazebo_ros_laser.so">
+                    <alwaysOn>true</alwaysOn>
+					<updateRate>10</updateRate>
+                    <!-- <topicName>${lidar_prefix}_lidar/data</topicName>
+                    <frameName>${lidar_prefix}_lidar_top_link</frameName> -->
+                    <topicName>/scan</topicName>
+                    <frameName>/base_laser</frameName>
+                </plugin>
+            </sensor>
+        </gazebo>
+
+		<!--transmission name="${lidar_prefix}_lidar_trans" type="SimpleTransmission">
+			<type>transmission_interface/SimpleTransmission</type>
+			<actuator name="${lidar_prefix}_lidar_motor">
+				<mechanicalReduction>1</mechanicalReduction>
+				<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+			</actuator>
+			<joint name="${lidar_prefix}_lidar">
+				<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+			</joint>
+		</transmission-->
+
+	</xacro:macro>
+</robot>

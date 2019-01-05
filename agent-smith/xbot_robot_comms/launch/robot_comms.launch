@@ -1,0 +1,9 @@
+<launch>
+
+    <include file="$(find timed_roslaunch)/launch/timed_roslaunch.launch">
+        <arg name="time" value="2" />
+        <arg name="pkg" value="xbot_robot_comms" />
+        <arg name="file" value="can_bridge.launch" />
+    </include>
+    <node name="robot_comms" pkg="xbot_robot_comms" type="xbot_robot_comms_node"/>
+</launch>

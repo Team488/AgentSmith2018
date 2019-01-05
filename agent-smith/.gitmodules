@@ -1,0 +1,6 @@
+[submodule "xbot_data"]
+	path = xbot_data
+	url = https://github.com/Team488/xbot_data.git
+[submodule "timed_roslaunch"]
+	path = timed_roslaunch
+	url = https://github.com/MoriKen254/timed_roslaunch

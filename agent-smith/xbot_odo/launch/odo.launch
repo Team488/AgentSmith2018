@@ -1,0 +1,13 @@
+<launch>
+  <node pkg="xbot_odo" type="imu_broadcaster" name="imu_broadcaster" output="screen"/>
+  <node pkg="xbot_odo" type="odo_broadcaster" name="odo_broadcaster" output="screen"/>
+  <node pkg="robot_localization" type="ukf_localization_node" name="ukf_se" clear_params="true">
+    <rosparam command="load" file="$(find xbot_odo)/params/ukf.yaml"/>
+    <remap from="/odometry/filtered" to="/odom"/>
+    <!--  Placeholder for output topic remapping
+    <remap from="odometry/filtered" to=""/>
+    <remap from="accel/filtered" to=""/>
+    -->
+
+  </node>
+</launch>

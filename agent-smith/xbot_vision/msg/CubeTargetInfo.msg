@@ -1,0 +1,2 @@
+bool has_tracked_cube
+geometry_msgs/PointStamped target_cube_point

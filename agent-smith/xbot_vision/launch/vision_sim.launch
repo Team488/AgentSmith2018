@@ -1,0 +1,8 @@
+<launch>
+    <node name="xbot_vision_node" pkg="xbot_vision" type="xbot_vision_node" output="screen">
+        <param name="config_file" value="/home/nvidia/vision_config.xml"/>
+        <param name="is_gui" value="false"/>
+        <param name="is_sim" value="true"/>
+    </node>
+    <!--node pkg="xbot_setup_tf" type="tf_broadcaster" name="tf_broadcaster" output="screen"/-->
+</launch>

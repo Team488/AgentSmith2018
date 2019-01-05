@@ -1,0 +1,161 @@
+<?xml version="1.0"?>
+<robot name="zed" xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <xacro:property name="M_PI" value="3.14159" />
+
+	<xacro:macro name="zed" params="zed_prefix *joint_pose">
+		<link name="${zed_prefix}_zed_base_link">
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <mesh filename="model://Gazebo2018/frc2018_robot/meshes/zed.stl" />
+                </geometry>
+                <material name="light_grey">
+                    <color rgba="0.8 0.8 0.8 0.8"/>
+                </material>
+            </visual>
+		</link>
+        <link name="${zed_prefix}_zed_left_camera_link">
+            <visual>
+                <origin xyz="0 0 0" rpy="0 ${0.5 * M_PI} 0"/>
+                <geometry>
+                    <cylinder radius="0.007" length=".031"/>
+                </geometry>
+                <material name="dark_grey">
+                    <color rgba="0.1 0.1 0.1 1"/>
+                </material>
+            </visual>
+        </link>
+        <link name="${zed_prefix}_zed_right_camera_link">
+            <visual>
+                <origin xyz="0 0 0" rpy="0 ${0.5 * M_PI} 0"/>
+                <geometry>
+                    <cylinder radius="0.007" length=".031"/>
+                </geometry>
+                <material name="dark_grey">
+                    <color rgba="0.1 0.1 0.1 1"/>
+                </material>
+            </visual>
+        </link>
+        <link name="${zed_prefix}_zed_depth_camera_link" />
+
+		<joint name="${zed_prefix}_zed_base" type="fixed">
+			<parent link="base_link" />
+			<child link="${zed_prefix}_zed_base_link" />
+			<xacro:insert_block name="joint_pose" />
+		</joint>
+        <joint name="${zed_prefix}_zed_left_camera_joint" type="fixed">
+            <parent link="${zed_prefix}_zed_base_link"/>
+            <child link="${zed_prefix}_zed_left_camera_link"/>
+            <origin xyz="0 0.06 0" rpy="0 0 0" />
+        </joint>
+        <joint name="${zed_prefix}_zed_right_camera_joint" type="fixed">
+            <parent link="${zed_prefix}_zed_base_link"/>
+            <child link="${zed_prefix}_zed_right_camera_link"/>
+            <origin xyz="0 -0.06 0" rpy="0 0 0" />
+        </joint>
+        <joint name="${zed_prefix}_zed_depth_camera_joint" type="fixed">
+            <parent link="${zed_prefix}_zed_left_camera_link"/>
+            <child link="${zed_prefix}_zed_depth_camera_link"/>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <!--origin xyz="0 0 0" rpy="-1.5707963267948966 0 -1.5707963267948966" /-->
+        </joint>
+
+        <gazebo reference="${zed_prefix}_zed_left_camera_link">
+            <sensor type="camera" name="${zed_prefix}_zed_left_camera">
+                <camera>
+                    <horizontal_fov>1.91986</horizontal_fov>
+                    <image>
+                        <width>1920</width>
+                        <height>1080</height>
+                        <format>R8G8B8</format>
+                    </image>
+                    <clip>
+                        <near>0.05</near>
+                        <far>20</far>
+                    </clip>
+                </camera>
+                <plugin name="${zed_prefix}_zed_left_camera_controller" filename="libgazebo_ros_camera.so">
+                    <alwaysOn>true</alwaysOn>
+                    <updateRate>30</updateRate>
+                    <cameraName>${zed_prefix}_zed_left_camera</cameraName>
+                    <imageTopicName>image</imageTopicName>
+                    <cameraInfoTopicName>info</cameraInfoTopicName>
+                    <frameName>${zed_prefix}_zed_left_camera_link</frameName>
+                    <hackBaseline>0.0</hackBaseline>
+                    <distortionK1>0.0</distortionK1>
+                    <distortionK2>0.0</distortionK2>
+                    <distortionK3>0.0</distortionK3>
+                    <distortionT1>0.0</distortionT1>
+                    <distortionT2>0.0</distortionT2>
+                </plugin>
+            </sensor>
+        </gazebo>
+        <gazebo reference="${zed_prefix}_zed_right_camera_link">
+            <sensor type="camera" name="${zed_prefix}_zed_right_camera">
+                <camera>
+                    <horizontal_fov>1.91986</horizontal_fov>
+                    <image>
+                        <width>1920</width>
+                        <height>1080</height>
+                        <format>R8G8B8</format>
+                    </image>
+                    <clip>
+                        <near>0.05</near>
+                        <far>20</far>
+                    </clip>
+                </camera>
+                <plugin name="${zed_prefix}_zed_right_camera_controller" filename="libgazebo_ros_camera.so">
+                    <alwaysOn>true</alwaysOn>
+                    <updateRate>30</updateRate>
+                    <cameraName>${zed_prefix}_zed_right_camera</cameraName>
+                    <imageTopicName>image</imageTopicName>
+                    <cameraInfoTopicName>info</cameraInfoTopicName>
+                    <frameName>${zed_prefix}_zed_right_camera_link</frameName>
+                    <hackBaseline>0.0</hackBaseline>
+                    <distortionK1>0.0</distortionK1>
+                    <distortionK2>0.0</distortionK2>
+                    <distortionK3>0.0</distortionK3>
+                    <distortionT1>0.0</distortionT1>
+                    <distortionT2>0.0</distortionT2>
+                </plugin>
+            </sensor>
+        </gazebo>
+        <!-- Place the sensor at the left camera, but use the depth camera's frame for the output -->
+        <gazebo reference="${zed_prefix}_zed_depth_camera_link">
+            <sensor type="depth" name="${zed_prefix}_zed_depth_camera">
+                <camera>
+                    <horizontal_fov>1.91986</horizontal_fov>
+                    <image>
+                        <width>1920</width>
+                        <height>1080</height>
+                        <format>R8G8B8</format>
+                    </image>
+                    <clip>
+                        <near>0.05</near>
+                        <far>20</far>
+                    </clip>
+                    <depth_camera>
+                        <output>points</output>
+                    </depth_camera>
+                </camera>
+                <plugin name="${zed_prefix}_zed_depth_camera_controller" filename="libgazebo_ros_depth_camera.so">
+                    <alwaysOn>true</alwaysOn>
+                    <updateRate>30</updateRate>
+                    <cameraName>${zed_prefix}_zed_depth_camera</cameraName>
+                    <pointCloudTopicName>points</pointCloudTopicName>
+                    <cameraInfoTopicName>info</cameraInfoTopicName>
+                    <frameName>${zed_prefix}_zed_depth_camera_link</frameName>
+                    <pointCloudCutoff>0.5</pointCloudCutoff>
+                    <hackBaseline>0.0</hackBaseline>
+                    <distortionK1>0.0</distortionK1>
+                    <distortionK2>0.0</distortionK2>
+                    <distortionK3>0.0</distortionK3>
+                    <distortionT1>0.0</distortionT1>
+                    <distortionT2>0.0</distortionT2>
+                </plugin>
+            </sensor>
+        </gazebo>
+
+	</xacro:macro>
+</robot>

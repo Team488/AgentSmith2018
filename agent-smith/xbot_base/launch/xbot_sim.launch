@@ -1,0 +1,14 @@
+<launch>
+    <!-- Get the ROS loading stuff in here -->
+    <!-- <node pkg="xbot_setup_tf" type="tf_broadcaster" name="tf_broadcaster" output="screen"/> -->
+    <include file="$(find xbot_lidar)/launch/lidar_sim.launch"/>
+    <include file="$(find xbot_odo)/launch/odo_sim.launch"/>
+    <!-- Maybe replace the following -->
+    <include file="$(find xbot_nav)/launch/xbot_sim_nav.launch"/>
+    <include file="$(find xbot_behavior_agent)/launch/behavior_agent.launch"/>
+    <!-- <include file="$(find xbot_vision)/launch/vision_sim.launch"/> -->
+
+    <!-- Gazebo sim stuff -->
+    <include file="$(find agent-smith_gazebo)/launch/agent-smith-sim.launch"/>
+    <include file="$(find agent-smith_control)/launch/agent-smith-control.launch"/>
+</launch>

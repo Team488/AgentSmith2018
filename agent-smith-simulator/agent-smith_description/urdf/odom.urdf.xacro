@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<robot name="odom" xmlns:xacro="http://ros.org/wiki/xacro">
+	<xacro:macro name="odom" params="odom_prefix odom_link">
+        <gazebo>
+            <plugin name="${odom_prefix}_odom_controller" filename="libgazebo_ros_p3d.so">
+                <alwaysOn>true</alwaysOn>
+                <updateRate>50</updateRate> 
+                <bodyName>${odom_link}</bodyName>
+                <frameName>/map</frameName>
+                <topicName>${odom_prefix}_odom/data</topicName>
+                <xyzOffset>0 0 0</xyzOffset>
+                <rpyOffset>0 0 0</rpyOffset>
+                <gaussianNoise>0.0</gaussianNoise>
+            </plugin>
+        </gazebo>
+	</xacro:macro>
+</robot>

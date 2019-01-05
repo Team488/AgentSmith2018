@@ -1,0 +1,5 @@
+<launch>
+  <arg name="map_file" default="$(find xbot_map)/../xbot_data/maps/fixed99.yaml"/>
+  <!-- Run the map server -->
+  <node name="xbot_map_ingest" pkg="map_server" type="map_server" args="$(arg map_file)" />
+</launch>

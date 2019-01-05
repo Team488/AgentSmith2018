@@ -1,0 +1,27 @@
+scoring_poses:
+  sp_r_n:
+    name: scoring_pose_right_near #right near
+    frame_id: map
+    pose:
+      
+
+
+  sp_l_n:
+    name: scoring_pose_left_near #left near
+    frame_id: map
+
+  sp_r_sc:
+    name: scoring_pose_right_scale #right scale
+    frame_id: map
+
+  sp_l_sc:
+    name: scoring_pose_left_scale #left scale
+    frame_id: map
+
+  sp_r_f:
+    name: scoring_pose_right_far #right far
+    frame_id: map
+
+  sp_l_f:
+    name: scoring_pose_left_far #left far
+    frame_id: map

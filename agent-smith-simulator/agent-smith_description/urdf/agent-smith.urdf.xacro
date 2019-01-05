@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<robot name="robot" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- Included URDF/XACRO Files -->
+  <xacro:include filename="$(find agent-smith_description)/urdf/wheel.urdf.xacro" />
+  <xacro:include filename="$(find agent-smith_description)/urdf/imu.urdf.xacro" />
+  <xacro:include filename="$(find agent-smith_description)/urdf/odom.urdf.xacro" />
+  <xacro:include filename="$(find agent-smith_description)/urdf/rplidar-a2.urdf.xacro" />
+  <xacro:include filename="$(find agent-smith_description)/urdf/zed.urdf.xacro" />
+
+  <xacro:property name="M_PI" value="3.14159" />
+
+  <!-- Calculate max speed -->
+  <xacro:property name="M_INCHES_PER_FOOT" value="12" />
+  <xacro:property name="WHEEL_RAD_INCHES" value="2" />
+  <xacro:property name="MAX_SPEED_FEET_PER_SEC" value="120" />
+  <xacro:property name="MAX_SPEED_RAD_PER_SEC" value="${MAX_SPEED_FEET_PER_SEC * M_INCHES_PER_FOOT / MAX_SPEED_FEET_PER_SEC}" />
+
+  <!-- Wheel friction -->
+  <xacro:property name="WHEEL_MU2" value="0.25" />
+
+  <!-- Load the gazebo_ros_control plugin -->
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+    </plugin>
+  </gazebo>
+
+  <!-- Base link is the center of the robot's bottom plate -->
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 ${-0.5 * M_PI}" />
+      <geometry>
+        <mesh filename="model://Gazebo2018/frc2018_robot/meshes/robot.obj" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.129853" rpy="0 0 0" />
+      <geometry>
+        <box size="0.837328 0.694572 0.188976" />
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- Base footprint is on the ground under the robot -->
+  <link name="base_footprint"/>
+
+  <joint name="base_footprint_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="base_footprint" />
+  </joint>
+
+  <!-- Interial link stores the robot's inertial information -->
+  <link name="inertial_link">
+    <inertial>
+      <mass value="45.3592" />
+      <origin xyz="0 0 0.060411" />
+      <inertia ixx="1.9585429" ixy="0" ixz="0" iyy="2.7851686" iyz="0" izz="4.4737342" />
+    </inertial>
+  </link>
+
+  <joint name="inertial_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="inertial_link" />
+  </joint>
+
+  <!-- Wheel macros -->
+  <xacro:wheel wheel_prefix="front_left" max_speed_rad_per_sec="${MAX_SPEED_FEET_PER_SEC}" mu2="${WHEEL_MU2}">
+    <origin xyz="0.339673 0.322842 0.060411" rpy="0 0 0" />
+  </xacro:wheel>
+  <xacro:wheel wheel_prefix="front_right" max_speed_rad_per_sec="${MAX_SPEED_FEET_PER_SEC}" mu2="${WHEEL_MU2}">
+    <origin xyz="0.339673 -0.31916 0.060411" rpy="0 0 0" />
+  </xacro:wheel>
+  <xacro:wheel wheel_prefix="mid_left" max_speed_rad_per_sec="${MAX_SPEED_FEET_PER_SEC}" mu2="${WHEEL_MU2}">
+    <origin xyz="-0.004098 0.322842 0.060411" rpy="0 0 0" />
+  </xacro:wheel>
+  <xacro:wheel wheel_prefix="mid_right" max_speed_rad_per_sec="${MAX_SPEED_FEET_PER_SEC}" mu2="${WHEEL_MU2}">
+    <origin xyz="-0.004098 -0.31916 0.060411" rpy="0 0 0" />
+  </xacro:wheel>
+  <xacro:wheel wheel_prefix="back_left" max_speed_rad_per_sec="${MAX_SPEED_FEET_PER_SEC}" mu2="0">
+    <origin xyz="-0.346192 0.31847 0.060411" rpy="0 0 0" />
+  </xacro:wheel>
+  <xacro:wheel wheel_prefix="back_right" max_speed_rad_per_sec="${MAX_SPEED_FEET_PER_SEC}" mu2="0">
+    <origin xyz="-0.346192 -0.31484 0.060411" rpy="0 0 0" />
+  </xacro:wheel>
+
+  <!-- Sensor macros -->
+  <xacro:imu imu_prefix="main" imu_link="base_link" />
+  <xacro:odom odom_prefix="main" odom_link="base_link" />
+  <xacro:rplidar-a2 lidar_prefix="main">
+    <!-- <origin xyz="0.114736 -0.299186 0.424" rpy="0 0 ${-M_PI}" /> -->
+    <!-- <origin xyz="0.114736 -0.299186 1.340" rpy="0 0 ${-M_PI}" /> -->
+    <origin xyz="0.114736 -0.299186 0.46355" rpy="0 0 ${-M_PI}" />
+  </xacro:rplidar-a2>
+  <xacro:zed zed_prefix="main">
+    <origin xyz="0.152836 -0.282786 0.875" rpy="0 0.401426 0" />
+  </xacro:zed>
+
+</robot>

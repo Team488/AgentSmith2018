@@ -1,0 +1,11 @@
+<launch>
+    <include file="$(find xbot_robot_comms)/launch/robot_comms.launch"/>
+    <node pkg="xbot_setup_tf" type="tf_broadcaster" name="tf_broadcaster"/>
+    <include file="$(find xbot_lidar)/launch/lidar_modified.launch"/>
+    <include file="$(find xbot_vision)/launch/vision.launch"/>
+    <node pkg="xbot_odo" type="imu_broadcaster" name="imu_broadcaster"/>
+
+
+     <!--node pkg="rosbag" type="record" name="rosbag_record_input"
+       args="record -o /scan"/-->   
+</launch>

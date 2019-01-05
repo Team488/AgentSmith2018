@@ -1,0 +1,8 @@
+<launch>
+    <include file="$(find xbot_robot_comms)/launch/robot_comms.launch"/>
+    <node pkg="xbot_setup_tf" type="tf_broadcaster" name="tf_broadcaster" output="screen"/>
+    <include file="$(find xbot_lidar)/launch/lidar_modified.launch"/>
+    <include file="$(find xbot_odo)/launch/odo.launch"/>
+    <include file="$(find xbot_nav)/launch/xbot_nav.launch"/>
+    <include file="$(find xbot_behavior_agent)/launch/behavior_agent.launch"/>
+</launch>

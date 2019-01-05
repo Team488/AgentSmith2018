@@ -1,0 +1,20 @@
+<launch>
+  <node name="ModeManagerNode" pkg="xbot_mode_manager" type="xbot_mode_manager_node.py">
+    <rosparam>
+        mode_id_mapping:
+            mode_1: 0x01
+            mode_2: 0x02
+            mode_3: 0x03
+        modes_by_node:
+            node_1:
+                - mode_1
+                - mode_3
+            node_2:
+                - mode_3
+                - mode_2
+            node_3:
+                - mode_2
+    </rosparam>
+  </node>
+  <test test-name="test" pkg="xbot_mode_manager" type="test.py" />
+</launch>

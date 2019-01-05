@@ -1,0 +1,1 @@
+uint8 goal_elevator_position

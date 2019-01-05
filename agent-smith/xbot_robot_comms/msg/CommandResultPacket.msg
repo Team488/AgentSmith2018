@@ -1,0 +1,2 @@
+uint8 command_id
+uint8 status_code

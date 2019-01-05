@@ -1,0 +1,10 @@
+<launch>
+    <node name="xbot_vision_node" pkg="xbot_vision" type="xbot_vision_node">  <!--launch-prefix="valgrind"-->
+        <param name="config_file" value="/home/nvidia/vision_config.xml"/>
+        <param name="is_gui" value="false"/>
+        <param name="is_sim" value="false"/>
+        <param name="is_training" value="false"/>
+        <rosparam command="load" file="$(find xbot_vision)/../xbot_data/cube_training/samples.yml" ns="training_images" />
+    </node>
+    <!--node pkg="xbot_setup_tf" type="tf_broadcaster" name="tf_broadcaster" output="screen"/-->
+</launch>

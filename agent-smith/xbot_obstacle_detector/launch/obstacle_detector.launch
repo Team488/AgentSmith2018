@@ -1,0 +1,4 @@
+<launch>
+    <include file="$(find xbot_lidar)/launch/lidar.launch" />
+    <node name="xbot_obstacle_detector" pkg="xbot_obstacle_detector" type="obstacle_detector_node.py" output = "screen"/>
+</launch>

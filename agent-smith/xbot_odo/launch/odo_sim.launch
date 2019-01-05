@@ -1,0 +1,10 @@
+<launch>
+  <!-- Put in stuff to get ROS into here (the IMUs?)-->
+  <!-- Do we need the following tf? -->
+  <node pkg="xbot_setup_tf" type="tf_broadcaster" name="tf_broadcaster" output="screen"/>
+  <node pkg="xbot_odo" type="sim_odo_broadcaster" name="sim_odo_broadcaster" output="screen"/>
+  <node pkg="robot_localization" type="ukf_localization_node" name="ukf_se" clear_params="true">
+    <rosparam command="load" file="$(find xbot_odo)/params/sim_ukf.yaml"/>
+    <remap from="/odometry/filtered" to="/odom"/>
+  </node>
+</launch>

@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <model name="frc2018_cube">
+    <static>false</static>
+    <link name="cube">
+
+      <!-- Visual of the field -->
+      <visual name="cube_visual">
+        <geometry>
+          <mesh>
+            <uri>model://Gazebo2018/frc2018_cube/meshes/cube.obj</uri>
+          </mesh>
+        </geometry>
+      </visual>
+
+      <!-- Collision geometries -->
+      <collision name='cube_collision'>
+        <pose>0 0 .14 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>.3302 .3302 .2794</size>
+          </box>
+        </geometry>
+      </collision>
+
+    </link>
+  </model>
+</sdf>

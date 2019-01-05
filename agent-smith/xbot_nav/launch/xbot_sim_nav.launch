@@ -1,0 +1,81 @@
+<launch>
+  <!-- <include file="$(find xbot_lidar)/launch/lidar_modified.launch"/>
+  <include file="$(find xbot_odo)/launch/odo.launch"/> -->
+  <include file="$(find xbot_map)/launch/xbot_map_ingest_headless.launch"/>
+  <!--include file="$(find xbot_vision)/launch/vision.launch"/-->
+
+  <!--- Run AMCL -->
+  <!--include file="$(find amcl)/examples/amcl_omni.launch" /-->
+  <node pkg="amcl" type="amcl" name="amcl">
+    <!-- Publish scans from best pose at a max of 10 Hz -->
+    <param name="odom_model_type" value="diff-corrected"/>
+    <!-- <param name="odom_alpha5" value="0.1"/> -->
+    <param name="transform_tolerance" value="0.1" />
+    <param name="gui_publish_rate" value="5.0"/>
+    <param name="laser_max_beams" value="360"/>
+    <param name="min_particles" value="500"/>
+    <param name="max_particles" value="5000"/>
+    <param name="kld_err" value="0.05"/>
+    <param name="kld_z" value="0.99"/>
+    <param name="odom_alpha1" value="0.2"/>
+    <param name="odom_alpha2" value="0.005"/>
+    <!-- translation std dev, m -->
+    <param name="odom_alpha3" value="0.010"/>
+    <param name="odom_alpha4" value="0.005"/>
+    <param name="laser_z_hit" value="0.7"/>
+    <param name="laser_z_short" value="0.05"/>
+    <param name="laser_z_max" value="0.05"/>
+    <param name="laser_z_rand" value="0.3"/>
+    <param name="laser_sigma_hit" value="0.3"/>
+    <param name="laser_lambda_short" value="0.1"/>
+    <param name="laser_lambda_short" value="0.1"/>
+    <param name="laser_model_type" value="likelihood_field"/>
+    <!-- <param name="laser_model_type" value="beam"/> -->
+    <param name="laser_likelihood_max_dist" value="2.0"/>
+    <param name="update_min_d" value="0.05"/>
+    <param name="update_min_a" value="0.25"/>
+    <param name="odom_frame_id" value="odom"/>
+    <param name="resample_interval" value="1"/>
+    <param name="recovery_alpha_slow" value="0.001"/>
+    <param name="recovery_alpha_fast" value="0.1"/>
+  </node>
+
+  <!-- <arg name="base_global_planner" default="navfn/NavfnROS"/> -->
+  <arg name="base_global_planner" default="global_planner/GlobalPlanner"/>
+  <arg name="base_local_planner" default="teb_local_planner/TebLocalPlannerROS" />
+
+
+
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <param name="base_global_planner" value="$(arg base_global_planner)"/>
+    <param name="base_local_planner" value="$(arg base_local_planner)"/>
+    
+    <rosparam file="$(find xbot_nav)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
+  	<rosparam file="$(find xbot_nav)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
+  	<rosparam file="$(find xbot_nav)/config/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find xbot_nav)/config/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find xbot_nav)/config/teb_local_planner_params.yaml" command="load" />
+
+		<param name="base_global_planner" value="global_planner/GlobalPlanner" />
+      <param name="planner_frequency" value="1.0" />
+      <param name="planner_patience" value="5.0" />
+
+		<param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
+      <param name="controller_frequency" value="10.0" />
+      <param name="controller_patience" value="15.0" />
+    
+    <!-- <rosparam file="$(find xbot_nav)/config/planner.yaml" command="load" />
+    
+    <rosparam file="$(find xbot_nav)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find xbot_nav)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    
+    <rosparam file="$(find xbot_nav)/config/local_costmap_params.yaml" command="load" ns="local_costmap" />
+    <param name="local_costmap/width" value="7.0"/>
+    <param name="local_costmap/height" value="7.0"/>
+    
+    <rosparam file="$(find xbot_nav)/config/global_costmap_params.yaml" command="load" ns="global_costmap" /> -->
+    
+  </node>
+  <node name="behavior_agent_node" pkg="xbot_behavior_agent" type="xbot_behavior_agent_node.py" output="screen"/>
+
+</launch>
